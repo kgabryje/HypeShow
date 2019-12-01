@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { generalStyles } from "../shared/styles";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const LoginScreen = () => {
   const passwordInput = useRef(null);
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={generalStyles.center}>
       <View style={styles.loginContainer}>
         <TextInput
           style={styles.input}
@@ -55,12 +56,6 @@ const LoginScreen = () => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    ...StyleSheet.absoluteFillObject,
-  },
   loginContainer: {
     width: "80%",
   },

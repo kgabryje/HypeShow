@@ -1,30 +1,31 @@
 import React from "react";
+import { SafeAreaView } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
-import LoginScreen from "../screens/loginScreen";
-import RegisterScreen from "../screens/registerScreen";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBar,
+} from "react-navigation-tabs";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 import { Ionicons } from "@expo/vector-icons";
 
-const TabNavigator = createMaterialTopTabNavigator(
+const AuthNavigator = createMaterialTopTabNavigator(
   {
-    loginScreen: {
+    Login: {
       screen: LoginScreen,
       navigationOptions: {
         tabBarLabel: "Login",
         showIcon: true,
-        header: null,
         tabBarIcon: () => {
           return <Ionicons name="md-contact" size={20} color={"black"} />;
         },
       },
     },
-    registerScreen: {
+    Register: {
       screen: RegisterScreen,
       navigationOptions: {
         tabBarLabel: "Register",
         showIcon: true,
-        header: null,
         tabBarIcon: () => {
           return <Ionicons name="md-create" size={20} color={"black"} />;
         },
@@ -32,7 +33,12 @@ const TabNavigator = createMaterialTopTabNavigator(
     },
   },
   {
-    initialRouteName: "LoginScreen",
+    initialRouteName: "Login",
+    tabBarComponent: props => (
+      <SafeAreaView>
+        <MaterialTopTabBar {...props} />
+      </SafeAreaView>
+    ),
     tabBarOptions: {
       showLabel: true,
       showIcon: true,
@@ -51,11 +57,10 @@ const TabNavigator = createMaterialTopTabNavigator(
 );
 export const RootNavigator = createStackNavigator(
   {
-    initialPage: TabNavigator,
+    Auth: AuthNavigator,
   },
   {
-    initialRouteName: "initialPage",
-    mode: "modal",
+    initialRouteName: "Auth",
     headerMode: "none",
   }
 );
