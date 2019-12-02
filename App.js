@@ -1,6 +1,6 @@
 import React from "react";
-import { DiscoverScreen } from "./screens/DiscoverScreen";
+import { Layout } from "./navigation/router";
 
 export default function App() {
-  return <DiscoverScreen />;
+  return <Layout />;
 }
