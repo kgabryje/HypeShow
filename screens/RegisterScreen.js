@@ -1,12 +1,11 @@
 import React from "react";
 import { Text, View } from "react-native";
+import { generalStyles } from "../shared/styles";
 
-const RegisterScreen = () => {
+export const RegisterScreen = () => {
   return (
-    <View>
+    <View styles={generalStyles.center}>
       <Text>REGISTER</Text>
     </View>
   );
 };
-
-export default RegisterScreen;

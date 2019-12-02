@@ -1,13 +1,69 @@
 import React from "react";
-import { SafeAreaView } from "react-navigation";
+import { View, Button, Platform } from "react-native";
+import {
+  SafeAreaView,
+  createSwitchNavigator,
+  createAppContainer,
+} from "react-navigation";
+import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBar,
 } from "react-navigation-tabs";
-import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import HeaderButton from "./CustomHeaderButton";
+import {
+  LoginScreen,
+  RegisterScreen,
+  DiscoverScreen,
+  FavouritesScreen,
+  ShowEpisodesScreen,
+} from "../screens";
 import { Ionicons } from "@expo/vector-icons";
+
+const ICONS = {
+  contact: Platform.OS === "android" ? "md-contact" : "ios-contact",
+  create: Platform.OS === "android" ? "md-create" : "ios-create",
+  menu: Platform.OS === "android" ? "md-menu" : "ios-menu",
+  star: Platform.OS === "android" ? "md-star" : "ios-star",
+  tv: Platform.OS === "android" ? "md-tv" : "ios-tv",
+};
+
+const defaultTabBarConfig = {
+  tabBarComponent: props => (
+    <SafeAreaView>
+      <MaterialTopTabBar {...props} />
+    </SafeAreaView>
+  ),
+  tabBarPosition: "bottom",
+  tabBarOptions: {
+    showLabel: true,
+    showIcon: true,
+    style: {
+      backgroundColor: "white",
+    },
+    labelStyle: {
+      color: "black",
+    },
+    indicatorStyle: {
+      backgroundColor: "black",
+    },
+    pressColor: "red",
+  },
+};
+
+const DrawerMenuButton = ({ navData }) => (
+  <HeaderButtons title="Drawer toggle" HeaderButtonComponent={HeaderButton}>
+    <Item
+      title="Menu"
+      iconName={ICONS.menu}
+      onPress={() => {
+        navData.navigation.toggleDrawer();
+      }}
+    />
+  </HeaderButtons>
+);
 
 const AuthNavigator = createMaterialTopTabNavigator(
   {
@@ -17,7 +73,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         tabBarLabel: "Login",
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name="md-contact" size={20} color={"black"} />;
+          return <Ionicons name={ICONS.contact} size={20} color={"black"} />;
         },
       },
     },
@@ -27,40 +83,84 @@ const AuthNavigator = createMaterialTopTabNavigator(
         tabBarLabel: "Register",
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name="md-create" size={20} color={"black"} />;
+          return <Ionicons name={ICONS.create} size={20} color={"black"} />;
         },
       },
     },
   },
+  defaultTabBarConfig
+);
+
+const ShowsTabNavigator = createMaterialTopTabNavigator(
   {
-    initialRouteName: "Login",
-    tabBarComponent: props => (
-      <SafeAreaView>
-        <MaterialTopTabBar {...props} />
-      </SafeAreaView>
-    ),
-    tabBarOptions: {
-      showLabel: true,
-      showIcon: true,
-      style: {
-        backgroundColor: "white",
+    Discover: {
+      screen: DiscoverScreen,
+      navigationOptions: {
+        tabBarLabel: "Discover",
+        showIcon: true,
+        tabBarIcon: () => {
+          return <Ionicons name={ICONS.tv} size={20} color={"black"} />;
+        },
       },
-      labelStyle: {
-        color: "black",
+    },
+    Favourites: {
+      screen: FavouritesScreen,
+      navigationOptions: {
+        tabBarLabel: "Favourites",
+        showIcon: true,
+        tabBarIcon: () => {
+          return <Ionicons name={ICONS.star} size={20} color={"black"} />;
+        },
       },
-      indicatorStyle: {
-        backgroundColor: "black",
-      },
-      pressColor: "red",
+    },
+  },
+  defaultTabBarConfig
+);
+
+const ShowsNavigator = createStackNavigator(
+  {
+    Shows: {
+      screen: ShowsTabNavigator,
+      navigationOptions: nav => ({
+        headerLeft: <DrawerMenuButton navData={nav} />,
+      }),
+    },
+    ShowDetails: {
+      screen: ShowEpisodesScreen,
+    },
+  },
+  {
+    navigationOptions: {
+      drawerIcon: () => <Ionicons name={ICONS.tv} size={20} color={"black"} />,
     },
   }
 );
-export const RootNavigator = createStackNavigator(
+
+const MainNavigator = createDrawerNavigator(
   {
-    Auth: AuthNavigator,
+    Shows: ShowsNavigator,
   },
   {
-    initialRouteName: "Auth",
-    headerMode: "none",
+    contentComponent: props => (
+      <SafeAreaView
+        forceInset={{ top: "always", horizontal: "never" }}
+        style={{ flex: 1, justifyContent: "space-between" }}
+      >
+        <DrawerItems {...props} />
+        <Button
+          title="Logout"
+          onPress={() => {
+            props.navigation.navigate("Auth");
+          }}
+        />
+      </SafeAreaView>
+    ),
   }
 );
+
+const RootNavigator = createSwitchNavigator({
+  Auth: AuthNavigator,
+  Main: MainNavigator,
+});
+
+export const Layout = createAppContainer(RootNavigator);

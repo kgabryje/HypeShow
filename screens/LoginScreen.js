@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import {
-  Image,
   KeyboardAvoidingView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -11,10 +9,16 @@ import {
 } from "react-native";
 import { generalStyles } from "../shared/styles";
 
-const LoginScreen = () => {
+export const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const passwordInput = useRef(null);
+
+  const authHandler = () => {
+    // code for signup/login here
+
+    props.navigation.navigate("Main");
+  };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={generalStyles.center}>
@@ -42,18 +46,13 @@ const LoginScreen = () => {
           value={password}
           onChangeText={password => setPassword(password)}
         />
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={() => this.login()}
-        >
+        <TouchableOpacity style={styles.buttonContainer} onPress={authHandler}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
-
-export default LoginScreen;
 
 const styles = StyleSheet.create({
   loginContainer: {
