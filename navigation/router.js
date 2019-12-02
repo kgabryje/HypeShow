@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button, Platform } from "react-native";
+import { Button, Platform, StyleSheet } from "react-native";
 import {
   SafeAreaView,
   createSwitchNavigator,
@@ -144,7 +144,7 @@ const MainNavigator = createDrawerNavigator(
     contentComponent: props => (
       <SafeAreaView
         forceInset={{ top: "always", horizontal: "never" }}
-        style={{ flex: 1, justifyContent: "space-between" }}
+        style={styles.drawer}
       >
         <DrawerItems {...props} />
         <Button
@@ -161,6 +161,13 @@ const MainNavigator = createDrawerNavigator(
 const RootNavigator = createSwitchNavigator({
   Auth: AuthNavigator,
   Main: MainNavigator,
+});
+
+const styles = StyleSheet.create({
+  drawer: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
 });
 
 export const Layout = createAppContainer(RootNavigator);
