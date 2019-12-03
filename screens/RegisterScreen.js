@@ -36,6 +36,7 @@ export const RegisterScreen = props => {
           value={firstName}
           onChangeText={source => setFirstName(source)}
         />
+
         <TextInput
           style={formStyle.input}
           placeholder={Texts.lastName}
@@ -47,6 +48,7 @@ export const RegisterScreen = props => {
           value={lastName}
           onChangeText={email => setLastName(email)}
         />
+
         <TextInput
           style={formStyle.input}
           placeholder={Texts.email}
