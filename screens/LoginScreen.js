@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 import {
   KeyboardAvoidingView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { generalStyles } from "../shared/styles";
+import { generalStyles, formStyle } from "../shared/styles";
+import * as Texts from "../shared/text";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
@@ -22,10 +22,10 @@ export const LoginScreen = props => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={generalStyles.center}>
-      <View style={styles.loginContainer}>
+      <View style={formStyle.container}>
         <TextInput
-          style={styles.input}
-          placeholder="Email"
+          style={formStyle.input}
+          placeholder={Texts.email}
           placeholderTextColor="rgba(0,0,0,0.4)"
           onSubmitEditing={() => passwordInput.current.focus()}
           keyboardType="email-address"
@@ -37,8 +37,8 @@ export const LoginScreen = props => {
         />
 
         <TextInput
-          style={styles.input}
-          placeholder="Password"
+          style={formStyle.input}
+          placeholder={Texts.password}
           secureTextEntry
           placeholderTextColor="rgba(0,0,0,0.4)"
           autoCapitalize="none"
@@ -46,37 +46,13 @@ export const LoginScreen = props => {
           value={password}
           onChangeText={password => setPassword(password)}
         />
-        <TouchableOpacity style={styles.buttonContainer} onPress={authHandler}>
-          <Text style={styles.buttonText}>LOGIN</Text>
+        <TouchableOpacity
+          style={formStyle.buttonContainer}
+          onPress={authHandler}
+        >
+          <Text style={formStyle.buttonText}>{Texts.login.toUpperCase()}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  loginContainer: {
-    width: "80%",
-  },
-  input: {
-    marginTop: 15,
-    borderRadius: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    height: 40,
-    color: "black",
-    padding: 10,
-  },
-  buttonContainer: {
-    borderRadius: 5,
-    marginTop: 15,
-    backgroundColor: "red",
-    paddingVertical: 15,
-    elevation: 2,
-  },
-  buttonText: {
-    color: "white",
-    textAlign: "center",
-    letterSpacing: 3,
-  },
-});

@@ -1,0 +1,10 @@
+{
+  "login": "Login",
+  "register": "Register",
+  "email": "Email",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "password": "Password",
+  "discover": "Discover",
+  "favourites": "Favourites"
+}

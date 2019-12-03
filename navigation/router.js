@@ -21,6 +21,13 @@ import {
   ShowEpisodesScreen,
 } from "../screens";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  whiteTheme,
+  greenTheme,
+  darkGreenTheme,
+  obsidianTheme,
+} from "../shared/color";
+import * as Texts from "../shared/text";
 
 const ICONS = {
   contact: Platform.OS === "android" ? "md-contact" : "ios-contact",
@@ -41,15 +48,15 @@ const defaultTabBarConfig = {
     showLabel: true,
     showIcon: true,
     style: {
-      backgroundColor: "white",
+      backgroundColor: greenTheme,
     },
     labelStyle: {
-      color: "black",
+      color: whiteTheme,
     },
     indicatorStyle: {
-      backgroundColor: "black",
+      backgroundColor: whiteTheme,
     },
-    pressColor: "red",
+    pressColor: darkGreenTheme,
   },
 };
 
@@ -70,20 +77,20 @@ const AuthNavigator = createMaterialTopTabNavigator(
     Login: {
       screen: LoginScreen,
       navigationOptions: {
-        tabBarLabel: "Login",
+        tabBarLabel: Texts.login,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.contact} size={20} color={"black"} />;
+          return <Ionicons name={ICONS.contact} size={20} color={whiteTheme} />;
         },
       },
     },
     Register: {
       screen: RegisterScreen,
       navigationOptions: {
-        tabBarLabel: "Register",
+        tabBarLabel: Texts.register,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.create} size={20} color={"black"} />;
+          return <Ionicons name={ICONS.create} size={20} color={whiteTheme} />;
         },
       },
     },
@@ -96,20 +103,20 @@ const ShowsTabNavigator = createMaterialTopTabNavigator(
     Discover: {
       screen: DiscoverScreen,
       navigationOptions: {
-        tabBarLabel: "Discover",
+        tabBarLabel: Texts.discover,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.tv} size={20} color={"black"} />;
+          return <Ionicons name={ICONS.tv} size={20} color={whiteTheme} />;
         },
       },
     },
     Favourites: {
       screen: FavouritesScreen,
       navigationOptions: {
-        tabBarLabel: "Favourites",
+        tabBarLabel: Texts.favourites,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.star} size={20} color={"black"} />;
+          return <Ionicons name={ICONS.star} size={20} color={whiteTheme} />;
         },
       },
     },
@@ -131,7 +138,9 @@ const ShowsNavigator = createStackNavigator(
   },
   {
     navigationOptions: {
-      drawerIcon: () => <Ionicons name={ICONS.tv} size={20} color={"black"} />,
+      drawerIcon: () => (
+        <Ionicons name={ICONS.tv} size={20} color={whiteTheme} />
+      ),
     },
   }
 );
@@ -141,6 +150,7 @@ const MainNavigator = createDrawerNavigator(
     Shows: ShowsNavigator,
   },
   {
+    drawerBackgroundColor: obsidianTheme,
     contentComponent: props => (
       <SafeAreaView
         forceInset={{ top: "always", horizontal: "never" }}
