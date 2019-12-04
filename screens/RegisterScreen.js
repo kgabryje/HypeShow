@@ -27,7 +27,7 @@ export const RegisterScreen = props => {
       <View style={formStyle.container}>
         <TextInput
           style={formStyle.input}
-          placeholder={Texts.firstName}
+          placeholder={Texts.auth.firstName}
           placeholderTextColor="rgba(0,0,0,0.4)"
           onSubmitEditing={() => lastNameInput.current.focus()}
           autoCapitalize={"sentences"}
@@ -39,7 +39,7 @@ export const RegisterScreen = props => {
 
         <TextInput
           style={formStyle.input}
-          placeholder={Texts.lastName}
+          placeholder={Texts.auth.lastName}
           placeholderTextColor="rgba(0,0,0,0.4)"
           onSubmitEditing={() => emailInput.current.focus()}
           autoCapitalize={"sentences"}
@@ -51,7 +51,7 @@ export const RegisterScreen = props => {
 
         <TextInput
           style={formStyle.input}
-          placeholder={Texts.email}
+          placeholder={Texts.auth.email}
           placeholderTextColor="rgba(0,0,0,0.4)"
           onSubmitEditing={() => passwordInput.current.focus()}
           keyboardType="email-address"
@@ -64,7 +64,7 @@ export const RegisterScreen = props => {
 
         <TextInput
           style={formStyle.input}
-          placeholder={Texts.password}
+          placeholder={Texts.auth.password}
           secureTextEntry
           placeholderTextColor="rgba(0,0,0,0.4)"
           autoCapitalize="none"
@@ -77,7 +77,7 @@ export const RegisterScreen = props => {
           onPress={registerHandler}
         >
           <Text style={formStyle.buttonText}>
-            {Texts.register.toUpperCase()}
+            {Texts.auth.register.toUpperCase()}
           </Text>
         </TouchableOpacity>
       </View>

@@ -25,7 +25,7 @@ export const LoginScreen = props => {
       <View style={formStyle.container}>
         <TextInput
           style={formStyle.input}
-          placeholder={Texts.email}
+          placeholder={Texts.auth.email}
           placeholderTextColor="rgba(0,0,0,0.4)"
           onSubmitEditing={() => passwordInput.current.focus()}
           keyboardType="email-address"
@@ -38,7 +38,7 @@ export const LoginScreen = props => {
 
         <TextInput
           style={formStyle.input}
-          placeholder={Texts.password}
+          placeholder={Texts.auth.password}
           secureTextEntry
           placeholderTextColor="rgba(0,0,0,0.4)"
           autoCapitalize="none"
@@ -50,7 +50,9 @@ export const LoginScreen = props => {
           style={formStyle.buttonContainer}
           onPress={authHandler}
         >
-          <Text style={formStyle.buttonText}>{Texts.login.toUpperCase()}</Text>
+          <Text style={formStyle.buttonText}>
+            {Texts.auth.login.toUpperCase()}
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

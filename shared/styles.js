@@ -1,12 +1,12 @@
 import { StyleSheet } from "react-native";
-import { greenTheme, obsidianTheme, whiteTheme } from "./color";
+import { colors } from "./color";
 
 export const generalStyles = StyleSheet.create({
   center: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: obsidianTheme,
+    backgroundColor: colors.obsidianTheme,
   },
 });
 
@@ -18,20 +18,20 @@ export const formStyle = StyleSheet.create({
     marginTop: 15,
     borderRadius: 15,
     borderBottomWidth: 1,
-    borderBottomColor: greenTheme,
+    borderBottomColor: colors.greenTheme,
     height: 40,
-    color: whiteTheme,
+    color: colors.whiteTheme,
     padding: 10,
   },
   buttonContainer: {
     borderRadius: 5,
     marginTop: 15,
-    backgroundColor: greenTheme,
+    backgroundColor: colors.greenTheme,
     paddingVertical: 15,
     elevation: 2,
   },
   buttonText: {
-    color: whiteTheme,
+    color: colors.whiteTheme,
     textAlign: "center",
     letterSpacing: 3,
   },
