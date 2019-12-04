@@ -8,6 +8,13 @@ export const generalStyles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.obsidianTheme,
   },
+  fullScreenCenter: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.obsidianTheme,
+    ...StyleSheet.absoluteFill,
+  },
 });
 
 export const formStyle = StyleSheet.create({

@@ -17,7 +17,7 @@ export const LoginScreen = props => {
   const authHandler = () => {
     // code for signup/login here
 
-    props.navigation.navigate("Main");
+    props.navigation.navigate("Loading");
   };
 
   return (

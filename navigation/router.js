@@ -19,6 +19,7 @@ import {
   DiscoverScreen,
   FavouritesScreen,
   ShowEpisodesScreen,
+  LoadingScreen,
 } from "../screens";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../shared/color";
@@ -152,6 +153,20 @@ const ShowsNavigator = createStackNavigator(
   }
 );
 
+const LoadingNavigation = createStackNavigator(
+  {
+    Loading: {
+      screen: LoadingScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    headerMode: "none",
+  }
+);
+
 const MainNavigator = createDrawerNavigator(
   {
     Shows: ShowsNavigator,
@@ -178,6 +193,7 @@ const MainNavigator = createDrawerNavigator(
 const RootNavigator = createSwitchNavigator({
   Auth: AuthNavigator,
   Main: MainNavigator,
+  Loading: LoadingNavigation,
 });
 
 const styles = StyleSheet.create({
