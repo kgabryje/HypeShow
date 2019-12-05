@@ -1,31 +1,51 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   KeyboardAvoidingView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { generalStyles } from "../shared/styles";
+import { generalStyles, formStyle } from "../shared/styles";
+import * as Texts from "../shared/text";
+import loginState, {
+  validateEmail,
+  isLoginInvalid,
+  validatePassword,
+} from "../components/loginValidators";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const passwordInput = useRef(null);
 
-  const authHandler = () => {
-    // code for signup/login here
+  useEffect(() => {
+    validateEmail(email);
+    setIsValid(true);
+  }, [email]);
 
-    props.navigation.navigate("Main");
+  useEffect(() => {
+    validatePassword(password);
+    setIsValid(true);
+  }, [password]);
+
+  const authHandler = () => {
+    validateEmail(email);
+    validatePassword(password);
+    if (isLoginInvalid()) {
+      setIsValid(false);
+    } else {
+      props.navigation.navigate("Loading");
+    }
   };
 
   return (
     <KeyboardAvoidingView behavior="padding" style={generalStyles.center}>
-      <View style={styles.loginContainer}>
+      <View style={formStyle.container}>
         <TextInput
-          style={styles.input}
-          placeholder="Email"
+          style={formStyle.input}
+          placeholder={Texts.auth.email}
           placeholderTextColor="rgba(0,0,0,0.4)"
           onSubmitEditing={() => passwordInput.current.focus()}
           keyboardType="email-address"
@@ -35,10 +55,13 @@ export const LoginScreen = props => {
           value={email}
           onChangeText={email => setEmail(email)}
         />
+        {loginState.email.error ? (
+          <Text style={formStyle.error}>{loginState.email.message}</Text>
+        ) : null}
 
         <TextInput
-          style={styles.input}
-          placeholder="Password"
+          style={formStyle.input}
+          placeholder={Texts.auth.password}
           secureTextEntry
           placeholderTextColor="rgba(0,0,0,0.4)"
           autoCapitalize="none"
@@ -46,37 +69,21 @@ export const LoginScreen = props => {
           value={password}
           onChangeText={password => setPassword(password)}
         />
-        <TouchableOpacity style={styles.buttonContainer} onPress={authHandler}>
-          <Text style={styles.buttonText}>LOGIN</Text>
+        {loginState.password.error ? (
+          <Text style={formStyle.error}>{loginState.password.message}</Text>
+        ) : null}
+
+        <TouchableOpacity
+          style={
+            isValid ? formStyle.buttonContainer : formStyle.buttonContainerError
+          }
+          onPress={authHandler}
+        >
+          <Text style={formStyle.buttonText}>
+            {Texts.auth.login.toUpperCase()}
+          </Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  loginContainer: {
-    width: "80%",
-  },
-  input: {
-    marginTop: 15,
-    borderRadius: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    height: 40,
-    color: "black",
-    padding: 10,
-  },
-  buttonContainer: {
-    borderRadius: 5,
-    marginTop: 15,
-    backgroundColor: "red",
-    paddingVertical: 15,
-    elevation: 2,
-  },
-  buttonText: {
-    color: "white",
-    textAlign: "center",
-    letterSpacing: 3,
-  },
-});

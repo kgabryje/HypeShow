@@ -1,0 +1,14 @@
+{
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "password": "Password"
+  },
+  "home": {
+    "discover": "Discover",
+    "favourites": "Favourites"
+  }
+}
