@@ -6,7 +6,7 @@ export const generalStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.obsidian,
+    backgroundColor: colors.blue,
   },
   fullScreenCenter: {
     flex: 1,
@@ -24,15 +24,16 @@ export const formStyle = StyleSheet.create({
     marginTop: 15,
     borderRadius: 15,
     borderBottomWidth: 1,
-    borderBottomColor: colors.green,
+    borderBottomColor: colors.white,
     height: 40,
     color: colors.white,
     padding: 10,
+    fontSize: 15,
   },
   buttonContainer: {
     borderRadius: 5,
     marginTop: 15,
-    backgroundColor: colors.green,
+    backgroundColor: colors.white,
     paddingVertical: 15,
     elevation: 2,
   },
@@ -44,12 +45,17 @@ export const formStyle = StyleSheet.create({
     elevation: 2,
   },
   buttonText: {
+    color: colors.blue,
+    textAlign: "center",
+    letterSpacing: 3,
+  },
+  buttonTextError: {
     color: colors.white,
     textAlign: "center",
     letterSpacing: 3,
   },
   error: {
-    padding: 2,
+    padding: 3,
     color: colors.red,
   },
 });

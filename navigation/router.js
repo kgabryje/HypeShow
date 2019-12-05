@@ -44,15 +44,15 @@ const defaultTabBarConfig = {
     showLabel: true,
     showIcon: true,
     style: {
-      backgroundColor: colors.green,
-    },
-    labelStyle: {
-      color: colors.white,
-    },
-    indicatorStyle: {
       backgroundColor: colors.white,
     },
-    pressColor: colors.darkGreen,
+    labelStyle: {
+      color: colors.blue,
+    },
+    indicatorStyle: {
+      backgroundColor: colors.blue,
+    },
+    pressColor: colors.lightGreen,
   },
 };
 
@@ -77,7 +77,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         showIcon: true,
         tabBarIcon: () => {
           return (
-            <Ionicons name={ICONS.contact} size={20} color={colors.white} />
+            <Ionicons name={ICONS.contact} size={20} color={colors.blue} />
           );
         },
       },
@@ -88,9 +88,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         tabBarLabel: Texts.auth.register,
         showIcon: true,
         tabBarIcon: () => {
-          return (
-            <Ionicons name={ICONS.create} size={20} color={colors.white} />
-          );
+          return <Ionicons name={ICONS.create} size={20} color={colors.blue} />;
         },
       },
     },
@@ -106,7 +104,7 @@ const ShowsTabNavigator = createMaterialTopTabNavigator(
         tabBarLabel: Texts.home.discover,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.tv} size={20} color={colors.white} />;
+          return <Ionicons name={ICONS.tv} size={20} color={colors.blue} />;
         },
       },
     },
@@ -116,7 +114,7 @@ const ShowsTabNavigator = createMaterialTopTabNavigator(
         tabBarLabel: Texts.home.favourites,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.star} size={20} color={colors.white} />;
+          return <Ionicons name={ICONS.star} size={20} color={colors.blue} />;
         },
       },
     },
@@ -165,7 +163,7 @@ const MainNavigator = createDrawerNavigator(
     Shows: ShowsNavigator,
   },
   {
-    drawerBackgroundColor: colors.obsidian,
+    drawerBackgroundColor: colors.blue,
     contentComponent: props => (
       <SafeAreaView
         forceInset={{ top: "always", horizontal: "never" }}

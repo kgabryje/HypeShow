@@ -47,10 +47,10 @@ export const LoginScreen = props => {
   return (
     <KeyboardAvoidingView behavior="padding" style={generalStyles.center}>
       <LinearGradient
-        colors={[colors.obsidian, colors.green]}
-        start={[0.0, 0.0]}
-        end={[1.0, 1.0]}
-        locations={[0, 1]}
+        colors={[colors.blue, colors.lightGreen]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        locations={[0.2, 1.0]}
         style={generalStyles.fullScreenCenter}
       >
         <ImageBackground source={BG} style={generalStyles.fullScreenCenter}>
@@ -58,7 +58,7 @@ export const LoginScreen = props => {
             <TextInput
               style={formStyle.input}
               placeholder={Texts.auth.email}
-              placeholderTextColor="rgba(0,0,0,0.4)"
+              placeholderTextColor="rgba(255,255,255,0.7)"
               onSubmitEditing={() => passwordInput.current.focus()}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -75,7 +75,7 @@ export const LoginScreen = props => {
               style={formStyle.input}
               placeholder={Texts.auth.password}
               secureTextEntry
-              placeholderTextColor="rgba(0,0,0,0.4)"
+              placeholderTextColor="rgba(255,255,255,0.7)"
               autoCapitalize="none"
               ref={passwordInput}
               value={password}
@@ -93,7 +93,11 @@ export const LoginScreen = props => {
               }
               onPress={authHandler}
             >
-              <Text style={formStyle.buttonText}>
+              <Text
+                style={
+                  isValid ? formStyle.buttonText : formStyle.buttonTextError
+                }
+              >
                 {Texts.auth.login.toUpperCase()}
               </Text>
             </TouchableOpacity>

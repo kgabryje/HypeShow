@@ -4,20 +4,20 @@ import { emailRegex } from "../shared/constants.js";
 const registerState = {
   firstName: {
     error: false,
-    message: "",
+    message: ""
   },
   lastName: {
     error: false,
-    message: "",
+    message: ""
   },
   email: {
     error: false,
-    message: "",
+    message: ""
   },
   password: {
     error: false,
-    message: "",
-  },
+    message: ""
+  }
 };
 
 export const isRegistrationInvalid = () => {
@@ -65,7 +65,7 @@ export const validateLastName = lastName => {
     registerState.lastName.message = "";
   } else {
     registerState.lastName.error = true;
-    registerState.lastName.message = "Last name should have at least 6 signs";
+    registerState.lastName.message = "Last name should have at least 2 signs";
   }
 };
 

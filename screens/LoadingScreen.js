@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { generalStyles } from "../shared/styles";
 import LottieView from "lottie-react-native";
 import { colors } from "../shared/color";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const LoadingScreen = props => {
   const animation = useRef(null);
@@ -11,20 +12,24 @@ export const LoadingScreen = props => {
 
   setTimeout(() => {
     transition.current.play();
-  }, 4000);
+  }, 6000);
 
   const navigate = () => {
     props.navigation.navigate("Main");
   };
 
   return (
-    <View style={generalStyles.fullScreenCenter}>
+    <LinearGradient
+      colors={[colors.blue, colors.lightGreen]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+      locations={[0.2, 1.0]}
+      style={generalStyles.fullScreenCenter}
+    >
       <LottieView
         ref={animation}
         style={{
-          width: 400,
-          height: 400,
-          backgroundColor: colors.obsidian,
+          backgroundColor: "transparent",
         }}
         source={require("../assets/loading")}
         loop
@@ -48,6 +53,6 @@ export const LoadingScreen = props => {
         source={require("../assets/transition")}
         onAnimationFinish={navigate}
       />
-    </View>
+    </LinearGradient>
   );
 };
