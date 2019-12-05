@@ -129,6 +129,7 @@ const ShowsNavigator = createStackNavigator(
     Shows: {
       screen: ShowsTabNavigator,
       navigationOptions: nav => ({
+        headerTransparent: true,
         headerLeft: <DrawerMenuButton navData={nav} />,
       }),
     },

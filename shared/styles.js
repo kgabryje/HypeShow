@@ -12,7 +12,6 @@ export const generalStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.obsidian,
     ...StyleSheet.absoluteFill,
   },
 });
