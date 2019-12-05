@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   Text,
@@ -8,16 +8,36 @@ import {
 } from "react-native";
 import { generalStyles, formStyle } from "../shared/styles";
 import * as Texts from "../shared/text";
+import loginState, {
+  validateEmail,
+  isLoginInvalid,
+  validatePassword,
+} from "../components/loginValidators";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const passwordInput = useRef(null);
 
-  const authHandler = () => {
-    // code for signup/login here
+  useEffect(() => {
+    validateEmail(email);
+    setIsValid(true);
+  }, [email]);
 
-    props.navigation.navigate("Loading");
+  useEffect(() => {
+    validatePassword(password);
+    setIsValid(true);
+  }, [password]);
+
+  const authHandler = () => {
+    validateEmail(email);
+    validatePassword(password);
+    if (isLoginInvalid()) {
+      setIsValid(false);
+    } else {
+      props.navigation.navigate("Loading");
+    }
   };
 
   return (
@@ -35,6 +55,9 @@ export const LoginScreen = props => {
           value={email}
           onChangeText={email => setEmail(email)}
         />
+        {loginState.email.error ? (
+          <Text style={formStyle.error}>{loginState.email.message}</Text>
+        ) : null}
 
         <TextInput
           style={formStyle.input}
@@ -46,8 +69,14 @@ export const LoginScreen = props => {
           value={password}
           onChangeText={password => setPassword(password)}
         />
+        {loginState.password.error ? (
+          <Text style={formStyle.error}>{loginState.password.message}</Text>
+        ) : null}
+
         <TouchableOpacity
-          style={formStyle.buttonContainer}
+          style={
+            isValid ? formStyle.buttonContainer : formStyle.buttonContainerError
+          }
           onPress={authHandler}
         >
           <Text style={formStyle.buttonText}>

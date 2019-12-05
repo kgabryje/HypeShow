@@ -5,7 +5,9 @@
     "email": "Email",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "password": "Password",
+    "password": "Password"
+  },
+  "home": {
     "discover": "Discover",
     "favourites": "Favourites"
   }

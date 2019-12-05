@@ -24,7 +24,7 @@ export const LoadingScreen = props => {
         style={{
           width: 400,
           height: 400,
-          backgroundColor: colors.obsidianTheme,
+          backgroundColor: colors.obsidian,
         }}
         source={require("../assets/loading")}
         loop

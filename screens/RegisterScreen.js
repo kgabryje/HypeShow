@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   Text,
@@ -8,18 +8,54 @@ import {
 } from "react-native";
 import { generalStyles, formStyle } from "../shared/styles";
 import * as Texts from "../shared/text";
+import registerState, {
+  isRegistrationInvalid,
+  validateEmail,
+  validatePassword,
+  validateLastName,
+  validateFirstName,
+} from "../components/registerValidators";
 
 export const RegisterScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [isValid, setIsValid] = useState(true);
   const lastNameInput = useRef(null);
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
 
+  useEffect(() => {
+    validatePassword(password);
+    setIsValid(true);
+  }, [password]);
+
+  useEffect(() => {
+    validateEmail(email);
+    setIsValid(true);
+  }, [email]);
+
+  useEffect(() => {
+    validateFirstName(firstName);
+    setIsValid(true);
+  }, [firstName]);
+
+  useEffect(() => {
+    validateLastName(lastName);
+    setIsValid(true);
+  }, [lastName]);
+
   const registerHandler = () => {
-    props.navigation.navigate("Login");
+    validateEmail(email);
+    validatePassword(password);
+    validateFirstName(firstName);
+    validateLastName(lastName);
+    if (isRegistrationInvalid()) {
+      setIsValid(false);
+    } else {
+      props.navigation.navigate("Login");
+    }
   };
 
   return (
@@ -36,6 +72,9 @@ export const RegisterScreen = props => {
           value={firstName}
           onChangeText={source => setFirstName(source)}
         />
+        {registerState.firstName.error ? (
+          <Text style={formStyle.error}>{registerState.firstName.message}</Text>
+        ) : null}
 
         <TextInput
           style={formStyle.input}
@@ -48,6 +87,9 @@ export const RegisterScreen = props => {
           value={lastName}
           onChangeText={email => setLastName(email)}
         />
+        {registerState.lastName.error ? (
+          <Text style={formStyle.error}>{registerState.lastName.message}</Text>
+        ) : null}
 
         <TextInput
           style={formStyle.input}
@@ -61,6 +103,9 @@ export const RegisterScreen = props => {
           value={email}
           onChangeText={email => setEmail(email)}
         />
+        {registerState.email.error ? (
+          <Text style={formStyle.error}>{registerState.email.message}</Text>
+        ) : null}
 
         <TextInput
           style={formStyle.input}
@@ -72,8 +117,14 @@ export const RegisterScreen = props => {
           value={password}
           onChangeText={password => setPassword(password)}
         />
+        {registerState.password.error ? (
+          <Text style={formStyle.error}>{registerState.password.message}</Text>
+        ) : null}
+
         <TouchableOpacity
-          style={formStyle.buttonContainer}
+          style={
+            isValid ? formStyle.buttonContainer : formStyle.buttonContainerError
+          }
           onPress={registerHandler}
         >
           <Text style={formStyle.buttonText}>

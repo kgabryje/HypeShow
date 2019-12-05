@@ -44,15 +44,15 @@ const defaultTabBarConfig = {
     showLabel: true,
     showIcon: true,
     style: {
-      backgroundColor: colors.greenTheme,
+      backgroundColor: colors.green,
     },
     labelStyle: {
-      color: colors.whiteTheme,
+      color: colors.white,
     },
     indicatorStyle: {
-      backgroundColor: colors.whiteTheme,
+      backgroundColor: colors.white,
     },
-    pressColor: colors.darkGreenTheme,
+    pressColor: colors.darkGreen,
   },
 };
 
@@ -77,11 +77,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         showIcon: true,
         tabBarIcon: () => {
           return (
-            <Ionicons
-              name={ICONS.contact}
-              size={20}
-              color={colors.whiteTheme}
-            />
+            <Ionicons name={ICONS.contact} size={20} color={colors.white} />
           );
         },
       },
@@ -93,7 +89,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         showIcon: true,
         tabBarIcon: () => {
           return (
-            <Ionicons name={ICONS.create} size={20} color={colors.whiteTheme} />
+            <Ionicons name={ICONS.create} size={20} color={colors.white} />
           );
         },
       },
@@ -107,24 +103,20 @@ const ShowsTabNavigator = createMaterialTopTabNavigator(
     Discover: {
       screen: DiscoverScreen,
       navigationOptions: {
-        tabBarLabel: Texts.auth.discover,
+        tabBarLabel: Texts.home.discover,
         showIcon: true,
         tabBarIcon: () => {
-          return (
-            <Ionicons name={ICONS.tv} size={20} color={colors.whiteTheme} />
-          );
+          return <Ionicons name={ICONS.tv} size={20} color={colors.white} />;
         },
       },
     },
     Favourites: {
       screen: FavouritesScreen,
       navigationOptions: {
-        tabBarLabel: Texts.auth.favourites,
+        tabBarLabel: Texts.home.favourites,
         showIcon: true,
         tabBarIcon: () => {
-          return (
-            <Ionicons name={ICONS.star} size={20} color={colors.whiteTheme} />
-          );
+          return <Ionicons name={ICONS.star} size={20} color={colors.white} />;
         },
       },
     },
@@ -147,7 +139,7 @@ const ShowsNavigator = createStackNavigator(
   {
     navigationOptions: {
       drawerIcon: () => (
-        <Ionicons name={ICONS.tv} size={20} color={colors.whiteTheme} />
+        <Ionicons name={ICONS.tv} size={20} color={colors.white} />
       ),
     },
   }
@@ -172,7 +164,7 @@ const MainNavigator = createDrawerNavigator(
     Shows: ShowsNavigator,
   },
   {
-    drawerBackgroundColor: colors.obsidianTheme,
+    drawerBackgroundColor: colors.obsidian,
     contentComponent: props => (
       <SafeAreaView
         forceInset={{ top: "always", horizontal: "never" }}
