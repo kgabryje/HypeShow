@@ -24,6 +24,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../shared/color";
 import * as Texts from "../shared/text";
+import { logout } from "../shared/firebase/service/auth";
 
 const ICONS = {
   contact: Platform.OS === "android" ? "md-contact" : "ios-contact",
@@ -44,15 +45,15 @@ const defaultTabBarConfig = {
     showLabel: true,
     showIcon: true,
     style: {
-      backgroundColor: colors.green,
-    },
-    labelStyle: {
-      color: colors.white,
-    },
-    indicatorStyle: {
       backgroundColor: colors.white,
     },
-    pressColor: colors.darkGreen,
+    labelStyle: {
+      color: colors.blue,
+    },
+    indicatorStyle: {
+      backgroundColor: colors.blue,
+    },
+    pressColor: colors.lightGreen,
   },
 };
 
@@ -77,7 +78,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         showIcon: true,
         tabBarIcon: () => {
           return (
-            <Ionicons name={ICONS.contact} size={20} color={colors.white} />
+            <Ionicons name={ICONS.contact} size={20} color={colors.blue} />
           );
         },
       },
@@ -88,9 +89,7 @@ const AuthNavigator = createMaterialTopTabNavigator(
         tabBarLabel: Texts.auth.register,
         showIcon: true,
         tabBarIcon: () => {
-          return (
-            <Ionicons name={ICONS.create} size={20} color={colors.white} />
-          );
+          return <Ionicons name={ICONS.create} size={20} color={colors.blue} />;
         },
       },
     },
@@ -106,7 +105,7 @@ const ShowsTabNavigator = createMaterialTopTabNavigator(
         tabBarLabel: Texts.home.discover,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.tv} size={20} color={colors.white} />;
+          return <Ionicons name={ICONS.tv} size={20} color={colors.blue} />;
         },
       },
     },
@@ -116,7 +115,7 @@ const ShowsTabNavigator = createMaterialTopTabNavigator(
         tabBarLabel: Texts.home.favourites,
         showIcon: true,
         tabBarIcon: () => {
-          return <Ionicons name={ICONS.star} size={20} color={colors.white} />;
+          return <Ionicons name={ICONS.star} size={20} color={colors.blue} />;
         },
       },
     },
@@ -129,6 +128,7 @@ const ShowsNavigator = createStackNavigator(
     Shows: {
       screen: ShowsTabNavigator,
       navigationOptions: nav => ({
+        headerTransparent: true,
         headerLeft: <DrawerMenuButton navData={nav} />,
       }),
     },
@@ -164,7 +164,7 @@ const MainNavigator = createDrawerNavigator(
     Shows: ShowsNavigator,
   },
   {
-    drawerBackgroundColor: colors.obsidian,
+    drawerBackgroundColor: colors.blue,
     contentComponent: props => (
       <SafeAreaView
         forceInset={{ top: "always", horizontal: "never" }}
@@ -174,7 +174,7 @@ const MainNavigator = createDrawerNavigator(
         <Button
           title="Logout"
           onPress={() => {
-            props.navigation.navigate("Auth");
+            logout(props.navigation);
           }}
         />
       </SafeAreaView>

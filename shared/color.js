@@ -1,7 +1,6 @@
 export const colors = {
   white: "#EAEFF2",
-  green: "#23B0A3",
-  darkGreen: "#0c9186",
-  obsidian: "#4C5270",
-  red: "#F00",
+  blue: "#506da4",
+  lightGreen: "#8ad9c0",
+  red: "#ff7166",
 };

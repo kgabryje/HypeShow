@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { generalStyles } from "../shared/styles";
+import { StyleSheet, Dimensions } from "react-native";
 import LottieView from "lottie-react-native";
-import { colors } from "../shared/color";
+import Layout from "../components/layout";
 
 export const LoadingScreen = props => {
   const animation = useRef(null);
@@ -11,20 +10,18 @@ export const LoadingScreen = props => {
 
   setTimeout(() => {
     transition.current.play();
-  }, 4000);
+  }, 6000);
 
   const navigate = () => {
     props.navigation.navigate("Main");
   };
 
   return (
-    <View style={generalStyles.fullScreenCenter}>
+    <Layout>
       <LottieView
         ref={animation}
         style={{
-          width: 400,
-          height: 400,
-          backgroundColor: colors.obsidian,
+          backgroundColor: "transparent",
         }}
         source={require("../assets/loading")}
         loop
@@ -48,6 +45,6 @@ export const LoadingScreen = props => {
         source={require("../assets/transition")}
         onAnimationFinish={navigate}
       />
-    </View>
+    </Layout>
   );
 };
