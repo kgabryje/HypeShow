@@ -18,6 +18,7 @@ import registerState, {
 } from "../components/registerValidators";
 import BG from "../assets/bg.png";
 import Layout from "../components/layout";
+import { register } from "../shared/firebase/service/auth";
 
 export const RegisterScreen = props => {
   const [email, setEmail] = useState("");
@@ -57,7 +58,13 @@ export const RegisterScreen = props => {
     if (isRegistrationInvalid()) {
       setIsValid(false);
     } else {
-      props.navigation.navigate("Login");
+      register(
+        {
+          email: email,
+          password: password,
+        },
+        props.navigation
+      );
     }
   };
 

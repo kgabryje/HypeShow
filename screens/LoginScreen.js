@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  Image,
 } from "react-native";
 import { generalStyles, formStyle } from "../shared/styles";
 import * as Texts from "../shared/text";
@@ -15,7 +16,9 @@ import loginState, {
   validatePassword,
 } from "../components/loginValidators";
 import BG from "../assets/bg.png";
+import GOOGLE from "../assets/google.png";
 import Layout from "../components/layout";
+import { login, loginByGoogle } from "../shared/firebase/service/auth";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
@@ -39,7 +42,13 @@ export const LoginScreen = props => {
     if (isLoginInvalid()) {
       setIsValid(false);
     } else {
-      props.navigation.navigate("Loading");
+      login(
+        {
+          email: email,
+          password: password,
+        },
+        props.navigation
+      );
     }
   };
 
@@ -92,6 +101,15 @@ export const LoginScreen = props => {
                 }
               >
                 {Texts.auth.login.toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={formStyle.googleButtonContainer}
+              onPress={() => loginByGoogle(props.navigation)}
+            >
+              <Image source={GOOGLE} style={formStyle.googleImage} />
+              <Text style={formStyle.googleText}>
+                {Texts.auth.loginByGoogle}
               </Text>
             </TouchableOpacity>
           </View>

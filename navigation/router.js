@@ -24,6 +24,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../shared/color";
 import * as Texts from "../shared/text";
+import { logout } from "../shared/firebase/service/auth";
 
 const ICONS = {
   contact: Platform.OS === "android" ? "md-contact" : "ios-contact",
@@ -173,7 +174,7 @@ const MainNavigator = createDrawerNavigator(
         <Button
           title="Logout"
           onPress={() => {
-            props.navigation.navigate("Auth");
+            logout(props.navigation);
           }}
         />
       </SafeAreaView>
