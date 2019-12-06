@@ -16,9 +16,8 @@ import registerState, {
   validateLastName,
   validateFirstName,
 } from "../components/registerValidators";
-import { LinearGradient } from "expo-linear-gradient";
-import { colors } from "../shared/color";
 import BG from "../assets/bg.png";
+import Layout from "../components/layout";
 
 export const RegisterScreen = props => {
   const [email, setEmail] = useState("");
@@ -64,13 +63,7 @@ export const RegisterScreen = props => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={generalStyles.center}>
-      <LinearGradient
-        colors={[colors.blue, colors.lightGreen]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        locations={[0.2, 1.0]}
-        style={generalStyles.fullScreenCenter}
-      >
+      <Layout>
         <ImageBackground source={BG} style={generalStyles.fullScreenCenter}>
           <View style={formStyle.container}>
             <TextInput
@@ -157,7 +150,7 @@ export const RegisterScreen = props => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-      </LinearGradient>
+      </Layout>
     </KeyboardAvoidingView>
   );
 };
