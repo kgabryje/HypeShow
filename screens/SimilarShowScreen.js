@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { generalStyles } from "../shared/styles";
+import { Text } from "react-native";
+import Layout from "../components/layout";
 
 export const SimilarShowsScreen = () => (
-  <View style={generalStyles.center}>
+  <Layout>
     <Text>Similar shows screen</Text>
-  </View>
+  </Layout>
 );

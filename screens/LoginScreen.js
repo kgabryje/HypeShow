@@ -14,8 +14,6 @@ import loginState, {
   isLoginInvalid,
   validatePassword,
 } from "../components/loginValidators";
-import { LinearGradient } from "expo-linear-gradient";
-import { colors } from "../shared/color";
 import BG from "../assets/bg.png";
 import Layout from "../components/layout";
 

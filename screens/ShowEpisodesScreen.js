@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { generalStyles } from "../shared/styles";
+import { Text } from "react-native";
+import Layout from "../components/layout";
 
 export const ShowEpisodesScreen = () => (
-  <View style={generalStyles.center}>
+  <Layout>
     <Text>Show episodes screen</Text>
-  </View>
+  </Layout>
 );
