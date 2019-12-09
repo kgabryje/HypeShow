@@ -18,13 +18,21 @@ import loginState, {
 import BG from "../assets/bg.png";
 import GOOGLE from "../assets/google.png";
 import Layout from "../components/layout";
-import { login, loginByGoogle } from "../shared/firebase/service/auth";
+import {
+  login,
+  loginByGoogle,
+  checkIfLoggedIn,
+} from "../shared/firebase/service/auth";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState(true);
   const passwordInput = useRef(null);
+
+  useEffect(() => {
+    checkIfLoggedIn(props.navigation);
+  }, [props.navigation]);
 
   useEffect(() => {
     validateEmail(email);
@@ -37,18 +45,13 @@ export const LoginScreen = props => {
   }, [password]);
 
   const authHandler = () => {
-    validateEmail(email);
-    validatePassword(password);
-    if (isLoginInvalid()) {
+    if (isLoginInvalid(email, password)) {
       setIsValid(false);
     } else {
-      login(
-        {
-          email: email,
-          password: password,
-        },
-        props.navigation
-      );
+      login({
+        email: email,
+        password: password,
+      });
     }
   };
 

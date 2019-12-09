@@ -51,20 +51,15 @@ export const RegisterScreen = props => {
   }, [lastName]);
 
   const registerHandler = () => {
-    validateEmail(email);
-    validatePassword(password);
-    validateFirstName(firstName);
-    validateLastName(lastName);
-    if (isRegistrationInvalid()) {
+    if (isRegistrationInvalid(email, password, firstName, lastName)) {
       setIsValid(false);
     } else {
-      register(
-        {
-          email: email,
-          password: password,
-        },
-        props.navigation
-      );
+      register({
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      });
     }
   };
 
