@@ -19,16 +19,18 @@ import BG from "../assets/bg.png";
 import GOOGLE from "../assets/google.png";
 import Layout from "../components/layout";
 import {
-  login,
   loginByGoogle,
   checkIfLoggedIn,
 } from "../shared/firebase/service/auth";
+import { useDispatch } from "react-redux";
+import * as actions from "../store/actions/actions";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState(true);
   const passwordInput = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     checkIfLoggedIn(props.navigation);
@@ -48,10 +50,7 @@ export const LoginScreen = props => {
     if (isLoginInvalid(email, password)) {
       setIsValid(false);
     } else {
-      login({
-        email: email,
-        password: password,
-      });
+      dispatch(actions.loginByPassStarted(email, password));
     }
   };
 

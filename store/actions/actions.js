@@ -20,8 +20,12 @@ export const fetchDiscoverFailed = payload => ({
   payload: payload,
 });
 
-export const loginByPassStarted = () => ({
+export const loginByPassStarted = (email, password) => ({
   type: LOGIN_BY_PASS_STARTED,
+  payload: {
+    email,
+    password,
+  },
 });
 export const loginGoogleStarted = () => ({
   type: LOGIN_GOOGLE_STARTED,

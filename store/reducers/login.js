@@ -11,7 +11,7 @@ const initialState = {
   isLogging: false,
   errorMessage: "",
   logged: false,
-  user: null,
+  user: {},
 };
 
 export default (state = initialState, action) => {
@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
     case LOGIN_BY_PASS_STARTED:
       return {
         ...state,
-        user: null,
+        user: {},
         logged: false,
         loginByGoogle: false,
         loginByPass: true,

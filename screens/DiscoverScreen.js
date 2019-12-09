@@ -12,8 +12,11 @@ export const DiscoverScreen = props => {
   }, [dispatch]);
 
   const shows = useSelector(state => state.shows.discoverShows);
+  const user = useSelector(state => state.login.user);
+
   return (
     <Layout>
+      {user != null ? <Text>{user.email}</Text> : null}
       <Text>Discover screen</Text>
       <Button
         onPress={() => props.navigation.navigate("ShowDetails")}
