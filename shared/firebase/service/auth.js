@@ -2,8 +2,6 @@ import { fireStore, auth } from "../firebase";
 import * as Google from "expo-google-app-auth";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "react-native-dotenv";
 import * as firebase from "firebase";
-import { call, put } from "redux-saga/effects";
-import * as actions from "../../../store/actions/actions";
 
 const USERS = "USERS";
 
@@ -41,29 +39,6 @@ export const register = credentials => {
       console.log(error);
     });
 };
-
-// export function* login(credentials) {
-//   yield put(actions.loginByPassStarted({}));
-//
-//   const { email, password } = credentials;
-//   yield auth
-//     .signInWithEmailAndPassword(email, password)
-//     .then(result => {
-//       const lastLoginAt = Date.now();
-//       fireStore
-//         .collection(USERS)
-//         .doc(result.user.uid)
-//         .set(
-//           {
-//             lastLoginAt,
-//           },
-//           { merge: true }
-//         );
-//     })
-//     .catch(error => {
-//       console.log(error);
-//     });
-// }
 
 export const login = credentials => {
   const { email, password } = credentials;
