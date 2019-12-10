@@ -2,64 +2,87 @@ import { fireStore, auth } from "../firebase";
 import * as Google from "expo-google-app-auth";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "react-native-dotenv";
 import * as firebase from "firebase";
+import { call, put } from "redux-saga/effects";
+import * as actions from "../../../store/actions/actions";
 
-const USERS = "USERS";
+const FIREBASE_USERS_PATH = "USERS";
 
 export const checkIfLoggedIn = navigation => {
   auth.onAuthStateChanged(user => {
     if (user) {
       navigation.navigate("Loading");
+    } else {
+      navigation.navigate("Auth");
     }
   });
 };
 
-export const register = credentials => {
-  const { email, password, firstName, lastName } = credentials;
-  auth
-    .createUserWithEmailAndPassword(email, password)
-    .then(result => {
-      const createdAt = Date.now();
-      const photoUrl = null;
-      const emailVerified = false;
-      const phoneNumber = null;
-      fireStore
-        .collection(USERS)
-        .doc(result.user.uid)
-        .set({
-          email,
-          firstName,
-          lastName,
-          createdAt,
-          photoUrl,
-          phoneNumber,
-          emailVerified,
-        });
-    })
-    .catch(error => {
-      console.log(error);
-    });
-};
+export function* register(action) {
+  const { email, password, firstName, lastName } = action;
 
-export const login = credentials => {
-  const { email, password } = credentials;
-  auth
-    .signInWithEmailAndPassword(email, password)
-    .then(result => {
-      const lastLoginAt = Date.now();
-      fireStore
-        .collection(USERS)
-        .doc(result.user.uid)
-        .set(
-          {
-            lastLoginAt,
-          },
-          { merge: true }
+  try {
+    const result = yield call(() =>
+      auth.createUserWithEmailAndPassword(email, password)
+    );
+    const createdAt = Date.now();
+    const photoUrl = null;
+    const emailVerified = false;
+    const phoneNumber = null;
+    console.log(result);
+    fireStore
+      .collection(FIREBASE_USERS_PATH)
+      .doc(result.user.uid)
+      .set({
+        email,
+        firstName,
+        lastName,
+        createdAt,
+        photoUrl,
+        phoneNumber,
+        emailVerified,
+      })
+      .then(() => {
+        put(
+          actions.registerSuccess({
+            email,
+            firstName,
+            lastName,
+            phoneNumber,
+            photoUrl,
+          })
         );
-    })
-    .catch(error => {
-      console.log(error);
-    });
-};
+      });
+  } catch (error) {
+    yield put(actions.registerFailed(error));
+    console.log(error);
+  }
+}
+
+export function* loginByPass(action) {
+  const { email, password } = action.payload;
+  try {
+    const result = yield call(() =>
+      auth.signInWithEmailAndPassword(email, password)
+    );
+    const lastLoginAt = Date.now();
+    console.log(result);
+    fireStore
+      .collection(FIREBASE_USERS_PATH)
+      .doc(result.user.uid)
+      .set(
+        {
+          lastLoginAt,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        put(actions.loginSuccess({ email }));
+      });
+  } catch (error) {
+    yield put(actions.loginFailed(error));
+    console.log(error);
+  }
+}
 
 export const loginByGoogle = async () => {
   const result = await Google.logInAsync({
@@ -94,7 +117,7 @@ const onSignIn = googleUser => {
           const lastName = user.familyName;
           const firstName = user.givenName;
           fireStore
-            .collection(USERS)
+            .collection(FIREBASE_USERS_PATH)
             .doc(result.user.uid)
             .set({
               email,
@@ -132,13 +155,10 @@ const isUserEqual = (googleUser, firebaseUser) => {
   return false;
 };
 
-export const logout = navigation => {
-  auth
-    .signOut()
-    .then(() => {
-      navigation.navigate("Login");
-    })
-    .catch(error => {
-      console.log(error);
-    });
-};
+export function* logout() {
+  try {
+    yield call(() => auth.signOut());
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -12,7 +12,7 @@ export const DiscoverScreen = props => {
   }, [dispatch]);
 
   const shows = useSelector(state => state.shows.discoverShows);
-  const user = useSelector(state => state.login.user);
+  const user = useSelector(state => state.auth.user);
 
   return (
     <Layout>
