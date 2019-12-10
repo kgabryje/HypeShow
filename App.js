@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import { Layout } from "./navigation/router";
+import { Router } from "./navigation/router";
 import createSagaMiddleware from "redux-saga";
 import showsReducer from "./store/reducers/showsReducer";
 import authReducer from "./store/reducers/authReducer";
 import { rootSaga } from "./store/sagas/sagas";
+import { auth } from "./shared/firebase/firebase";
 
 const rootReducer = combineReducers({
   shows: showsReducer,
@@ -20,7 +21,7 @@ sagaMiddleware.run(rootSaga);
 export default function App() {
   return (
     <Provider store={store}>
-      <Layout />
+      <Router />
     </Provider>
   );
 }

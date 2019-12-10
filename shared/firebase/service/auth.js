@@ -18,7 +18,7 @@ export const checkIfLoggedIn = navigation => {
 };
 
 export function* register(action) {
-  const { email, password, firstName, lastName } = action;
+  const { email, password, firstName, lastName } = action.payload;
 
   try {
     const result = yield call(() =>

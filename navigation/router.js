@@ -1,11 +1,11 @@
 import React from "react";
-import { Button, Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import {
   SafeAreaView,
   createSwitchNavigator,
   createAppContainer,
 } from "react-navigation";
-import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
+import { createDrawerNavigator } from "react-navigation-drawer";
 import { createStackNavigator } from "react-navigation-stack";
 import {
   createMaterialTopTabNavigator,
@@ -24,9 +24,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../shared/color";
 import * as Texts from "../shared/text";
-import { logout } from "../shared/firebase/service/auth";
-import { useDispatch } from "react-redux";
-import * as actions from "../store/actions/actions";
+import CustomDrawer from "./CustomDrawer";
 
 const ICONS = {
   contact: Platform.OS === "android" ? "md-contact" : "ios-contact",
@@ -167,21 +165,7 @@ const MainNavigator = createDrawerNavigator(
   },
   {
     drawerBackgroundColor: colors.blue,
-    contentComponent: props => (
-      <SafeAreaView
-        forceInset={{ top: "always", horizontal: "never" }}
-        style={styles.drawer}
-      >
-        <DrawerItems {...props} />
-        <Button
-          title="Logout"
-          onPress={() => {
-            const dispatch = useDispatch();
-            dispatch(actions.logout());
-          }}
-        />
-      </SafeAreaView>
-    ),
+    contentComponent: props => <CustomDrawer {...props} />,
   }
 );
 
@@ -191,11 +175,4 @@ const RootNavigator = createSwitchNavigator({
   Loading: LoadingNavigation,
 });
 
-const styles = StyleSheet.create({
-  drawer: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
-});
-
-export const Layout = createAppContainer(RootNavigator);
+export const Router = createAppContainer(RootNavigator);
