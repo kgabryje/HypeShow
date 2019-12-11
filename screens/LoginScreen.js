@@ -18,7 +18,7 @@ import loginState, {
 import BG from "../assets/bg.png";
 import GOOGLE from "../assets/google.png";
 import Layout from "../components/layout";
-import { loginByGoogle } from "../shared/firebase/service/auth";
+// import { loginByGoogle } from "../shared/firebase/service/auth";
 import { useDispatch } from "react-redux";
 import * as actions from "../store/actions/actions";
 
@@ -100,7 +100,7 @@ export const LoginScreen = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={formStyle.googleButtonContainer}
-              onPress={() => loginByGoogle(props.navigation)}
+              // onPress={() => loginByGoogle(props.navigation)}
             >
               <Image source={GOOGLE} style={formStyle.googleImage} />
               <Text style={formStyle.googleText}>

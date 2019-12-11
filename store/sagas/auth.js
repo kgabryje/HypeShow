@@ -1,24 +1,11 @@
-import { fireStore, auth } from "../firebase";
+import { fireStore, auth } from "../../shared/firebase/firebase";
 import * as Google from "expo-google-app-auth";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "react-native-dotenv";
 import * as firebase from "firebase";
 import { call, put } from "redux-saga/effects";
-import * as actions from "../../../store/actions/actions";
+import * as actions from "../actions/actions";
 
 const FIREBASE_USERS_PATH = "USERS";
-
-export const checkIfLoggedIn = navigation => {
-  /**TODO rewrite to SAGA, check only if app started or while logout. Navigate to Loading should be call by action loginSuccess.
-   * Now logging and logout doesnt work
-   */
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      navigation.navigate("Loading");
-    } else {
-      navigation.navigate("Auth");
-    }
-  });
-};
 
 export function* register(action) {
   const { email, password, firstName, lastName } = action.payload;
@@ -36,13 +23,13 @@ export function* register(action) {
       phoneNumber: null,
       emailVerified: false,
     };
-    fireStore
-      .collection(FIREBASE_USERS_PATH)
-      .doc(result.user.uid)
-      .set(data)
-      .then(() => {
-        put(actions.registerSuccess(data));
-      });
+    yield call(() =>
+      fireStore
+        .collection(FIREBASE_USERS_PATH)
+        .doc(result.user.uid)
+        .set(data)
+    );
+    yield put(actions.registerSuccess(data));
   } catch (error) {
     yield put(actions.registerFailed(error));
     console.log(error);
@@ -60,42 +47,45 @@ export function* loginByPass(action) {
       .collection(FIREBASE_USERS_PATH)
       .doc(result.user.uid);
 
-    docRef.get().then(doc => {
-      if (doc.exists) {
-        const lastLoginAt = Date.now();
-        docRef
-          .set(
-            {
-              lastLoginAt,
-            },
-            { merge: true }
-          )
-          .then(() => {
-            put(actions.loginSuccess(doc.data()));
-          });
-      }
-    });
+    const doc = yield call(() => docRef.get());
+    if (doc.exists) {
+      const lastLoginAt = Date.now();
+      yield call(() =>
+        docRef.set(
+          {
+            lastLoginAt,
+          },
+          { merge: true }
+        )
+      );
+
+      yield put(actions.loginSuccess(doc.data()));
+    }
   } catch (error) {
     yield put(actions.loginFailed(error));
     console.log(error);
   }
 }
 
-export const loginByGoogle = async () => {
-  //TODO rewrite to SAGA
-  const result = await Google.logInAsync({
-    behavior: "web",
-    iosClientId: IOS_CLIENT_ID,
-    androidClientId: ANDROID_CLIENT_ID,
-    scopes: ["profile", "email"],
-  });
+/*
+TODO rewrite to SAGA
+
+function* loginByGoogle() {
+  const result = yield call(() =>
+    Google.logInAsync({
+      behavior: "web",
+      iosClientId: IOS_CLIENT_ID,
+      androidClientId: ANDROID_CLIENT_ID,
+      scopes: ["profile", "email"]
+    })
+  );
 
   const { type } = result;
 
   if (type === "success") {
     onSignIn(result);
   }
-};
+}
 
 const onSignIn = googleUser => {
   const unsubscribe = auth.onAuthStateChanged(firebaseUser => {
@@ -119,7 +109,7 @@ const onSignIn = googleUser => {
             lastLoginAt: Date.now(),
             photoURL: photoURL,
             emailVerified: emailVerified,
-            phoneNumber: phoneNumber,
+            phoneNumber: phoneNumber
           };
 
           fireStore
@@ -156,6 +146,7 @@ const isUserEqual = (googleUser, firebaseUser) => {
   }
   return false;
 };
+*/
 
 export function* logout() {
   try {

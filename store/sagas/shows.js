@@ -1,13 +1,8 @@
-import { takeLatest, call, put } from "redux-saga/effects";
-import * as actions from "../actions/actions";
 import { discoverShowsUrl, withApiKey } from "../../shared/api";
-import {
-  loginByPass,
-  logout,
-  register,
-} from "../../shared/firebase/service/auth";
+import { call, put } from "redux-saga/effects";
+import * as actions from "../actions/actions";
 
-function* fetchDiscover() {
+export function* fetchDiscover() {
   const discoverApiUrl = withApiKey(discoverShowsUrl);
 
   try {
@@ -23,11 +18,4 @@ function* fetchDiscover() {
     err.status_message = err.message;
     yield put(actions.fetchDiscoverFailed(err));
   }
-}
-
-export function* rootSaga() {
-  yield takeLatest(actions.FETCH_DISCOVER_REQ, fetchDiscover);
-  yield takeLatest(actions.LOGIN_BY_PASS_STARTED, loginByPass);
-  yield takeLatest(actions.REGISTER_STARTED, register);
-  yield takeLatest(actions.LOGOUT, logout);
 }
