@@ -6,11 +6,10 @@ import createSagaMiddleware from "redux-saga";
 import showsReducer from "./store/reducers/showsReducer";
 import authReducer from "./store/reducers/authReducer";
 import { rootSaga } from "./store/sagas/sagas";
-import { auth } from "./shared/firebase/firebase";
 
 const rootReducer = combineReducers({
   shows: showsReducer,
-  auth: authReducer,
+  authData: authReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -19,6 +18,7 @@ const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 export default function App() {
+  console.ignoredYellowBox = ["Setting a timer"];
   return (
     <Provider store={store}>
       <Router />

@@ -8,6 +8,7 @@ import * as actions from "../../../store/actions/actions";
 const FIREBASE_USERS_PATH = "USERS";
 
 export const checkIfLoggedIn = navigation => {
+  //TODO rewrite to SAGA
   auth.onAuthStateChanged(user => {
     if (user) {
       navigation.navigate("Loading");
@@ -24,33 +25,21 @@ export function* register(action) {
     const result = yield call(() =>
       auth.createUserWithEmailAndPassword(email, password)
     );
-    const createdAt = Date.now();
-    const photoUrl = null;
-    const emailVerified = false;
-    const phoneNumber = null;
-    console.log(result);
+    const data = {
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      createdAt: Date.now(),
+      photoUrl: null,
+      phoneNumber: null,
+      emailVerified: false,
+    };
     fireStore
       .collection(FIREBASE_USERS_PATH)
       .doc(result.user.uid)
-      .set({
-        email,
-        firstName,
-        lastName,
-        createdAt,
-        photoUrl,
-        phoneNumber,
-        emailVerified,
-      })
+      .set(data)
       .then(() => {
-        put(
-          actions.registerSuccess({
-            email,
-            firstName,
-            lastName,
-            phoneNumber,
-            photoUrl,
-          })
-        );
+        put(actions.registerSuccess(data));
       });
   } catch (error) {
     yield put(actions.registerFailed(error));
@@ -64,20 +53,26 @@ export function* loginByPass(action) {
     const result = yield call(() =>
       auth.signInWithEmailAndPassword(email, password)
     );
-    const lastLoginAt = Date.now();
-    console.log(result);
-    fireStore
+
+    const docRef = fireStore
       .collection(FIREBASE_USERS_PATH)
-      .doc(result.user.uid)
-      .set(
-        {
-          lastLoginAt,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        put(actions.loginSuccess({ email }));
-      });
+      .doc(result.user.uid);
+
+    docRef.get().then(doc => {
+      if (doc.exists) {
+        const lastLoginAt = Date.now();
+        docRef
+          .set(
+            {
+              lastLoginAt,
+            },
+            { merge: true }
+          )
+          .then(() => {
+            put(actions.loginSuccess(doc.data()));
+          });
+      }
+    });
   } catch (error) {
     yield put(actions.loginFailed(error));
     console.log(error);
@@ -85,6 +80,7 @@ export function* loginByPass(action) {
 }
 
 export const loginByGoogle = async () => {
+  //TODO rewrite to SAGA
   const result = await Google.logInAsync({
     behavior: "web",
     iosClientId: IOS_CLIENT_ID,
@@ -112,27 +108,31 @@ const onSignIn = googleUser => {
       auth
         .signInWithCredential(credential)
         .then(result => {
-          const lastLoginAt = Date.now();
           const { photoURL, emailVerified, phoneNumber, email } = result.user;
-          const lastName = user.familyName;
-          const firstName = user.givenName;
+
+          const data = {
+            email: email,
+            firstName: user.givenName,
+            lastName: user.familyName,
+            lastLoginAt: Date.now(),
+            photoURL: photoURL,
+            emailVerified: emailVerified,
+            phoneNumber: phoneNumber,
+          };
+
           fireStore
             .collection(FIREBASE_USERS_PATH)
             .doc(result.user.uid)
-            .set({
-              email,
-              firstName,
-              lastName,
-              lastLoginAt,
-              photoURL,
-              emailVerified,
-              phoneNumber,
+            .set(data, { merge: true })
+            .then(() => {
+              actions.loginSuccess(data);
             });
         })
         .catch(function(error) {
           console.log(error);
         });
     } else {
+      actions.loginFailed(error);
       console.log("User already signed-in Firebase.");
     }
   });
