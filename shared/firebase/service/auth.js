@@ -8,7 +8,9 @@ import * as actions from "../../../store/actions/actions";
 const FIREBASE_USERS_PATH = "USERS";
 
 export const checkIfLoggedIn = navigation => {
-  //TODO rewrite to SAGA
+  /**TODO rewrite to SAGA, check only if app started or while logout. Navigate to Loading should be call by action loginSuccess.
+   * Now logging and logout doesnt work
+   */
   auth.onAuthStateChanged(user => {
     if (user) {
       navigation.navigate("Loading");
