@@ -2,7 +2,8 @@ import { fireStore, auth } from "../../shared/firebase/firebase";
 import * as Google from "expo-google-app-auth";
 import { ANDROID_CLIENT_ID, IOS_CLIENT_ID } from "react-native-dotenv";
 import * as firebase from "firebase";
-import { call, put } from "redux-saga/effects";
+import { eventChannel } from "redux-saga";
+import { call, put, take } from "redux-saga/effects";
 import * as actions from "../actions/actions";
 
 const FIREBASE_USERS_PATH = "USERS";
@@ -69,66 +70,77 @@ export function* loginByPass(action) {
 
 /*
 TODO rewrite to SAGA
-
-function* loginByGoogle() {
+*/
+export function* authByGoogle() {
   const result = yield call(() =>
     Google.logInAsync({
       behavior: "web",
       iosClientId: IOS_CLIENT_ID,
       androidClientId: ANDROID_CLIENT_ID,
-      scopes: ["profile", "email"]
+      scopes: ["profile", "email"],
     })
   );
 
   const { type } = result;
 
+  console.log(result);
   if (type === "success") {
-    onSignIn(result);
+    yield onSignIn(result);
   }
 }
 
-const onSignIn = googleUser => {
-  const unsubscribe = auth.onAuthStateChanged(firebaseUser => {
-    unsubscribe();
-    if (!isUserEqual(googleUser, firebaseUser)) {
+function* onSignIn(googleUser) {
+  const channel = eventChannel(emitter => {
+    const unsubscribe = auth.onAuthStateChanged(async firebaseUser => {
+      unsubscribe();
+
+      if (isUserEqual(googleUser, firebaseUser)) {
+        emitter(actions.authFailed(error));
+        console.log("User already signed-in Firebase.");
+        return;
+      }
+
       const credential = firebase.auth.GoogleAuthProvider.credential(
         googleUser.idToken,
         googleUser.accessToken
       );
 
-      const { user } = googleUser;
-      auth
-        .signInWithCredential(credential)
-        .then(result => {
-          const { photoURL, emailVerified, phoneNumber, email } = result.user;
+      try {
+        const { user } = googleUser;
+        const result = await auth.signInWithCredential(credential);
 
-          const data = {
-            email: email,
-            firstName: user.givenName,
-            lastName: user.familyName,
-            lastLoginAt: Date.now(),
-            photoURL: photoURL,
-            emailVerified: emailVerified,
-            phoneNumber: phoneNumber
-          };
+        const { photoURL, emailVerified, phoneNumber, email } = result.user;
 
-          fireStore
-            .collection(FIREBASE_USERS_PATH)
-            .doc(result.user.uid)
-            .set(data, { merge: true })
-            .then(() => {
-              actions.loginSuccess(data);
-            });
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    } else {
-      actions.loginFailed(error);
-      console.log("User already signed-in Firebase.");
-    }
+        const data = {
+          email: email,
+          firstName: user.givenName,
+          lastName: user.familyName,
+          lastLoginAt: Date.now(),
+          photoURL: photoURL,
+          emailVerified: emailVerified,
+          phoneNumber: phoneNumber,
+        };
+
+        await fireStore
+          .collection(FIREBASE_USERS_PATH)
+          .doc(result.user.uid)
+          .set(data, {
+            merge: true,
+          });
+
+        emitter(actions.authSuccess(data));
+      } catch (error) {
+        console.log(error);
+      }
+    });
+    return () => unsubscribe();
   });
-};
+
+  while (true) {
+    const action = yield take(channel);
+    yield put(action);
+  }
+}
 
 const isUserEqual = (googleUser, firebaseUser) => {
   if (firebaseUser) {
@@ -146,7 +158,6 @@ const isUserEqual = (googleUser, firebaseUser) => {
   }
   return false;
 };
-*/
 
 export function* logout() {
   try {

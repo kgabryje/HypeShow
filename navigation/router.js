@@ -170,9 +170,9 @@ const MainNavigator = createDrawerNavigator(
 );
 
 const RootNavigator = createSwitchNavigator({
+  Loading: LoadingNavigation,
   Auth: AuthNavigator,
   Main: MainNavigator,
-  Loading: LoadingNavigation,
 });
 
 export const Router = createAppContainer(RootNavigator);
