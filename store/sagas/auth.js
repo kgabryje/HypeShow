@@ -29,9 +29,9 @@ export function* register(action) {
         .doc(result.user.uid)
         .set(data)
     );
-    yield put(actions.registerSuccess(data));
+    yield put(actions.authSuccess(data));
   } catch (error) {
-    yield put(actions.registerFailed(error));
+    yield put(actions.authFailed(error));
     console.log(error);
   }
 }
@@ -59,10 +59,10 @@ export function* loginByPass(action) {
         )
       );
 
-      yield put(actions.loginSuccess(doc.data()));
+      yield put(actions.authSuccess(doc.data()));
     }
   } catch (error) {
-    yield put(actions.loginFailed(error));
+    yield put(actions.authFailed(error));
     console.log(error);
   }
 }

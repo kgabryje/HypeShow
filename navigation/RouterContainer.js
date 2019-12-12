@@ -14,7 +14,7 @@ export const RouterContainer = () => {
       const targetRoute = !!user ? "Loading" : "Auth";
       if (!!user) {
         // TODO: verify what parts of user object are needed
-        dispatch(actions.loginSuccess(user));
+        dispatch(actions.authSuccess(user));
       }
       navRef.current.dispatch(
         NavigationActions.navigate({ routeName: targetRoute })

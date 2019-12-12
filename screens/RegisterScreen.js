@@ -19,7 +19,7 @@ import registerState, {
 import BG from "../assets/bg.png";
 import Layout from "../components/layout";
 import * as actions from "../store/actions/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const RegisterScreen = props => {
   const [email, setEmail] = useState("");
@@ -31,6 +31,8 @@ export const RegisterScreen = props => {
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
   const dispatch = useDispatch();
+
+  const loading = useSelector(state => state.authData.loading);
 
   useEffect(() => {
     validatePassword(password);
@@ -138,6 +140,7 @@ export const RegisterScreen = props => {
                   : formStyle.buttonContainerError
               }
               onPress={registerHandler}
+              disabled={loading}
             >
               <Text
                 style={

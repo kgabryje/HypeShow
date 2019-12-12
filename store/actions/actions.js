@@ -1,14 +1,12 @@
 export const FETCH_DISCOVER_REQ = "FETCH_DISCOVER_REQ";
 export const FETCH_DISCOVER_SUCCEEDED = "FETCH_DISCOVER_SUCCEEDED";
 export const FETCH_DISCOVER_FAILED = "FETCH_DISCOVER_FAILED";
-export const LOGIN_BY_PASS_STARTED = "LOGIN_BY_PASS_STARTED";
-export const LOGIN_GOOGLE_STARTED = "LOGIN_GOOGLE_STARTED";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILED = "LOGIN_FAILED";
+export const LOGIN_STARTED = "LOGIN_BY_PASS_STARTED";
+export const AUTH_GOOGLE_STARTED = "AUTH_GOOGLE_STARTED";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAILED = "AUTH_FAILED";
 export const LOGOUT = "LOGOUT";
 export const REGISTER_STARTED = "REGISTER_STARTED";
-export const REGISTER_FAILED = "REGISTER_FAILED";
-export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 
 export const fetchDiscoverReq = () => ({
   type: FETCH_DISCOVER_REQ,
@@ -24,26 +22,12 @@ export const fetchDiscoverFailed = payload => ({
   payload: payload,
 });
 
-export const loginByPassStarted = (email, password) => ({
-  type: LOGIN_BY_PASS_STARTED,
+export const loginStarted = (email, password) => ({
+  type: LOGIN_STARTED,
   payload: {
     email,
     password,
   },
-});
-
-export const loginGoogleStarted = () => ({
-  type: LOGIN_GOOGLE_STARTED,
-});
-
-export const loginSuccess = payload => ({
-  type: LOGIN_SUCCESS,
-  payload: payload,
-});
-
-export const loginFailed = payload => ({
-  type: LOGIN_FAILED,
-  payload: payload,
 });
 
 export const registerStarted = (email, password, firstName, lastName) => ({
@@ -56,13 +40,17 @@ export const registerStarted = (email, password, firstName, lastName) => ({
   },
 });
 
-export const registerFailed = payload => ({
-  type: REGISTER_FAILED,
+export const authGoogleStarted = () => ({
+  type: AUTH_GOOGLE_STARTED,
+});
+
+export const authSuccess = payload => ({
+  type: AUTH_SUCCESS,
   payload: payload,
 });
 
-export const registerSuccess = payload => ({
-  type: REGISTER_SUCCESS,
+export const authFailed = payload => ({
+  type: AUTH_FAILED,
   payload: payload,
 });
 
