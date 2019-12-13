@@ -4,23 +4,27 @@ import { emailRegex } from "../shared/constants.js";
 const registerState = {
   firstName: {
     error: false,
-    message: ""
+    message: "",
   },
   lastName: {
     error: false,
-    message: ""
+    message: "",
   },
   email: {
     error: false,
-    message: ""
+    message: "",
   },
   password: {
     error: false,
-    message: ""
-  }
+    message: "",
+  },
 };
 
-export const isRegistrationInvalid = () => {
+export const isRegistrationInvalid = (email, password, firstName, lastName) => {
+  validateEmail(email);
+  validatePassword(password);
+  validateFirstName(firstName);
+  validateLastName(lastName);
   return (
     registerState.password.error ||
     registerState.email.error ||

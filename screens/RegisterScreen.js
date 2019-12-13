@@ -18,7 +18,8 @@ import registerState, {
 } from "../components/registerValidators";
 import BG from "../assets/bg.png";
 import Layout from "../components/layout";
-import { register } from "../shared/firebase/service/auth";
+import * as actions from "../store/actions/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 export const RegisterScreen = props => {
   const [email, setEmail] = useState("");
@@ -29,6 +30,9 @@ export const RegisterScreen = props => {
   const lastNameInput = useRef(null);
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
+  const dispatch = useDispatch();
+
+  const loading = useSelector(state => state.authData.loading);
 
   useEffect(() => {
     validatePassword(password);
@@ -51,20 +55,10 @@ export const RegisterScreen = props => {
   }, [lastName]);
 
   const registerHandler = () => {
-    validateEmail(email);
-    validatePassword(password);
-    validateFirstName(firstName);
-    validateLastName(lastName);
-    if (isRegistrationInvalid()) {
+    if (isRegistrationInvalid(email, password, firstName, lastName)) {
       setIsValid(false);
     } else {
-      register(
-        {
-          email: email,
-          password: password,
-        },
-        props.navigation
-      );
+      dispatch(actions.registerStarted(email, password, firstName, lastName));
     }
   };
 
@@ -146,6 +140,7 @@ export const RegisterScreen = props => {
                   : formStyle.buttonContainerError
               }
               onPress={registerHandler}
+              disabled={loading}
             >
               <Text
                 style={

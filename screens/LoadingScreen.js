@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import LottieView from "lottie-react-native";
 import Layout from "../components/layout";
@@ -8,9 +8,12 @@ export const LoadingScreen = props => {
   const transition = useRef(null);
   const { width, height } = Dimensions.get("window");
 
-  setTimeout(() => {
-    transition.current.play();
-  }, 6000);
+  useEffect(() => {
+    const timeoutHandle = setTimeout(() => {
+      transition.current.play();
+    }, 6000);
+    return () => clearTimeout(timeoutHandle);
+  }, []);
 
   const navigate = () => {
     props.navigation.navigate("Main");

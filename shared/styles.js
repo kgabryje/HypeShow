@@ -13,6 +13,7 @@ export const generalStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     ...StyleSheet.absoluteFill,
+    zIndex: 0,
   },
 });
 

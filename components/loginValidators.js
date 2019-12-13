@@ -12,7 +12,9 @@ const loginState = {
   },
 };
 
-export const isLoginInvalid = () => {
+export const isLoginInvalid = (email, password) => {
+  validateEmail(email);
+  validatePassword(password);
   return loginState.password.error || loginState.email.error;
 };
 

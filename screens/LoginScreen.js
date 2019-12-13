@@ -18,13 +18,17 @@ import loginState, {
 import BG from "../assets/bg.png";
 import GOOGLE from "../assets/google.png";
 import Layout from "../components/layout";
-import { login, loginByGoogle } from "../shared/firebase/service/auth";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../store/actions/actions";
 
 export const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState(true);
   const passwordInput = useRef(null);
+  const dispatch = useDispatch();
+
+  const loading = useSelector(state => state.authData.loading);
 
   useEffect(() => {
     validateEmail(email);
@@ -37,18 +41,10 @@ export const LoginScreen = props => {
   }, [password]);
 
   const authHandler = () => {
-    validateEmail(email);
-    validatePassword(password);
-    if (isLoginInvalid()) {
+    if (isLoginInvalid(email, password)) {
       setIsValid(false);
     } else {
-      login(
-        {
-          email: email,
-          password: password,
-        },
-        props.navigation
-      );
+      dispatch(actions.loginStarted(email, password));
     }
   };
 
@@ -94,6 +90,7 @@ export const LoginScreen = props => {
                   : formStyle.buttonContainerError
               }
               onPress={authHandler}
+              disabled={loading}
             >
               <Text
                 style={
@@ -105,7 +102,8 @@ export const LoginScreen = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={formStyle.googleButtonContainer}
-              onPress={() => loginByGoogle(props.navigation)}
+              disabled={loading}
+              onPress={() => dispatch(actions.authGoogleStarted())}
             >
               <Image source={GOOGLE} style={formStyle.googleImage} />
               <Text style={formStyle.googleText}>
