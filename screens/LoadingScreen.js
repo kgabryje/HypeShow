@@ -1,19 +1,28 @@
 import React, { useRef, useEffect } from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import LottieView from "lottie-react-native";
 import Layout from "../components/layout";
+import { registerForPushNotificationsAsync } from "../components/notifications";
+import { useSelector } from "react-redux";
 
 export const LoadingScreen = props => {
   const animation = useRef(null);
   const transition = useRef(null);
-  const { width, height } = Dimensions.get("window");
+  const user = useSelector(state => state.authData.user);
 
   useEffect(() => {
-    const timeoutHandle = setTimeout(() => {
-      transition.current.play();
-    }, 6000);
-    return () => clearTimeout(timeoutHandle);
-  }, []);
+    const loadData = async () => {
+      await registerForPushNotificationsAsync(user);
+    };
+
+    transition.current.play();
+    loadData()
+      .then(() => transition.current.reset())
+      .catch(error => {
+        console.log(error);
+        props.navigation.navigate("Auth");
+      });
+  }, [props.navigation, user]);
 
   const navigate = () => {
     props.navigation.navigate("Main");

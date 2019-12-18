@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "525626236651",
+    "firebase_url": "https://hypeshow.firebaseio.com",
+    "project_id": "hypeshow",
+    "storage_bucket": "hypeshow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525626236651:android:967ed60e97b3d827ab28ae",
+        "android_client_info": {
+          "package_name": "com.hypeshow.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvuE4GMjyUH5FF6zjBZubYPTw2jMvex5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525626236651-k2p2v49bdnmm48dfaev4ioqk9v0h6aff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
